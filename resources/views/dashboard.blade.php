@@ -3,21 +3,17 @@
 <div class="container custom-product">
 <div class="col-sm-10">
 <div class="trending-wrapper">
-<h4>My Orders</h4>
+<h4>Now You Are Viewing Your Customer's Details</h4>
 <br><br>
-@foreach($orders as $order)
+@foreach($users as $users)
 <div class="row serached-item!cart-list-divider"> 
 <div class="col-sm-3">
-<a href="/detail{{$item->id}}">
-      <img class="trending-image" src="{{$item->gallery}}" >
-    </a>
     </div>
     <div class="col-sm-4">
       <div class="">
-        <h2>Name  :  {{$order->name}}</h2>
-        <h5>Email :  {{$order->status}}</h5>
-        <h5>Created :  {{$order->address}}</h5>
-        <h5>Payment Method :  {{$order->payment_method}}</h5>
+        <h2>Name  :  {{$users->name}}</h2>
+        <h5>Email :  {{$users->email}}</h5>
+        <h5>Created :  {{$users->created_at}}</h5>
         <br><br>
       </div>
     </div>
@@ -27,5 +23,7 @@
 </div>
 </div>
 @endsection 
+
+   
 
    
