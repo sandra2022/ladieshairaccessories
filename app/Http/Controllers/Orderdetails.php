@@ -3,29 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Dashboard;
-use Illuminate\Support\Facades\DB;
+use App\Models\Orderdetailsmodel;
 
-class DashboardController extends Controller
+class Orderdetails extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    function index()
+    public function index()
     {
-        $data=Dashboard::all();
-        return view('user',['users'=>$data]);
+        //
     }
 
-    function dashboard()
-{
-  $users= DB::table('orders')
-     ->rightjoin('users','orders.user_id','=','users.id')
-     ->get();
-     return view('dashboard',['users'=>$users]);  
-}
     /**
      * Show the form for creating a new resource.
      *
