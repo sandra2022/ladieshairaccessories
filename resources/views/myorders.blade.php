@@ -8,7 +8,7 @@
 @foreach($orders as $item)
 <div class="row serached-item!cart-list-divider"> 
 <div class="col-sm-3">
-<a href="/detail{{$item->id}}">
+<a href="/detail/{{$item->id}}">
       <img class="trending-image" src="{{$item->gallery}}" >
     </a>
     </div>

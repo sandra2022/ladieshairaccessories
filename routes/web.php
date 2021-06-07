@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Orderdetails;
 use App\Http\Controllers\Orders;
+use App\Http\Controllers\ReviewController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,7 +33,7 @@ Route::view('/register','register');
 Route::post("/login",[UserController::class,'login']);
 Route::post("/register",[UserController::class,'register']);
 Route::get("/",[ProductController::class,'index']);
-Route::get("/detail{id}",[ProductController::class,'detail']);
+Route::get("/detail/{id}",[ProductController::class,'detail']);
 Route::get("search",[ProductController::class,'search']);
 Route::post("add_to_cart",[ProductController::class,'addToCart']);
 Route::get("cartlist",[ProductController::class,'cartList']);
@@ -42,6 +43,5 @@ Route::post("orderplace",[ProductController::class,'orderPlace']);
 Route::get("myorders",[ProductController::class,'myOrders']);
 Route::get("dashboard",[DashboardController::class,'dashboard']);
 Route::get("orders/{id}",[Orders::class,'orders']);
-
-
-
+Route::view('/addReview','addReview');
+Route::post("/addReview",[ReviewController::class,'addReview']);

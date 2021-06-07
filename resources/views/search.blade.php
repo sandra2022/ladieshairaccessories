@@ -9,7 +9,7 @@
 <h4>Result For Products</h4>
 @foreach($products as $item)
 <div class="serached-item"> 
-<a href="/detail{{$item['id']}}">
+<a href="/detail/{{$item['id']}}">
       <img class="trending-image" src="{{$item['gallery']}}" >
       <div class="">
         <h2>{{$item['name']}}</h2>

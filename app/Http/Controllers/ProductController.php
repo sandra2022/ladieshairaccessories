@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Review;
 use Session;
 use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
@@ -17,8 +18,39 @@ class ProductController extends Controller
     }
     function detail($id)
     {
+        $avg = 0;$five=0;$four=0;$three=0;$two=0;$one=0;
+        $num = 0;
         $data=Product::find($id);
-        return view('detail',['product'=>$data]);
+        $reviewData = DB::table('users')
+        ->join('reviews','reviews.user_id','=','users.id')
+        ->where('reviews.product_id',$id)
+        ->orderBy('reviews.id', 'desc')
+        ->get();
+        $i = 0;
+        $length = 0;
+        foreach ($reviewData  as $review){ 
+                $num = $num+$review->rating;
+                $length++;
+                if($review->rating == 5){
+                    $five++;
+                }
+                if($review->rating == 4){
+                    $four++;
+                }
+                if($review->rating == 3){
+                    $three++;
+                }
+                if($review->rating == 2){
+                    $two++;
+                }
+                if($review->rating == 1){
+                    $one++;
+                }
+            }
+        if($length != 0){
+            $avg = $num/$length;
+        }
+        return view('detail',['product'=>$data],['reviews'=>$reviewData,'avg'=>$avg,'five'=>$five,'four'=>$four,'three'=>$three,'two'=>$two,'one'=>$one]);
     }
     function search(Request $req)
     {
