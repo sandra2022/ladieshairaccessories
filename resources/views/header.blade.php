@@ -59,22 +59,30 @@ $total= ProductController::cartItem();
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/#"><b> Home</b></a></li>
-        <li class="active"><a href="/aboutus"><b>About Us</b></a> </li>
+        <li><a href="/#"><b> Home</b></a></li>
+        <li><a href="/aboutus"><b>About Us</b></a> </li>
       </ul>
       <form action="/search" class="navbar-form navbar-left">
+      @if(Session::get('user')['role']==1)
+      <div class="form-group">
+          <input type="text" name="query" class="form-control search-box" placeholder="Search" style="max-width: 490px;">
+        </div>
+        <button type="submit" class="btn btn-default hidden"><b>Search</b></button>
+      @else
         <div class="form-group">
           <input type="text" name="query" class="form-control search-box" placeholder="Search">
         </div>
         <button type="submit" class="btn btn-default"><b>Search</b></button>
+      @endif
       </form>
       <ul class="nav navbar-nav navbar-right">
         @if(Session::has('user'))
         @if(Session::get('user')['role']==1)
-        <li class="active"><a href="/dashboard"><b>Dashboard</b></a> </li>
+        <li><a href="/addProduct"><b>Add Product</b></a> </li>
+        <li><a href="/dashboard"><b>Dashboard</b></a> </li>
         @endif
         <li><a href="/cartlist"><b>Cart({{$total}})</b> </a></li>
-        <li class="active"><a href="/myorders"><b>Orders</b></a> </li>
+        <li><a href="/myorders"><b>Orders</b></a> </li>
         <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{Session::get('user')['name']}}
         <span class="caret"></span></a>

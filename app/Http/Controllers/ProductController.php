@@ -13,8 +13,14 @@ class ProductController extends Controller
 {
     function index()
     {
-        $data=Product::all();
-        return view('product',['products'=>$data]);
+        $userId=Session::get('user')['id'];
+        $data=DB::table('products')
+        ->select('products.id AS id', 'products.name AS name', 'products.price AS price', 'products.description AS description', 'products.gallery AS gallery', 'cart.id AS cart_id', 'cart.user_id AS user_id')
+        ->leftjoin('cart','cart.product_id','=','products.id')
+        ->orderBy('products.id', 'asc')
+        ->get();
+        $result = json_decode($data, true);
+        return view('product',['products'=>$result]);
     }
     function detail($id)
     {
@@ -93,7 +99,19 @@ function removeCart($id)
     Cart::destroy($id);
     return redirect('cartlist');
 }
-function orderNow()
+function orderNow($id)
+{
+    $userId=Session::get('user')['id'];
+   $total= $products= DB::table('cart')
+    ->join('products','cart.product_id','=','products.id')
+    ->where('cart.user_id',$userId)
+    ->where('products.id',$id)
+    ->sum('products.price');
+
+    return view('ordernow',['total'=>$total,'productId'=>$id]);  
+}
+
+function orderMany()
 {
     $userId=Session::get('user')['id'];
    $total= $products= DB::table('cart')
@@ -102,10 +120,26 @@ function orderNow()
     
     ->sum('products.price');
 
-    return view('ordernow',['total'=>$total]);  
+    return view('orderMany',['total'=>$total]);  
 }
 
 function orderPlace(Request $req)
+{
+    $userId=Session::get('user')['id'];
+$order=new Order;
+$order->product_id=$req->product_id;
+$order->user_id=$userId;
+$order->status="pending";
+$order->payment_method=$req->payment;
+$order->payment_status="pending";
+$order->address=$req->address;
+$order->save();
+Cart::where('product_id',$req->product_id)->delete();
+$req->input();
+return redirect('/');
+}
+
+function orderManyPlace(Request $req)
 {
     $userId=Session::get('user')['id'];
      $allCart= Cart::where('user_id',$userId)->get();
@@ -134,10 +168,21 @@ function myOrders()
      ->get();
      return view('myorders',['orders'=>$orders]);  
 }
+function addProduct()
+    {
+        return view('addProduct');
+    }
 
-
-
-
-
+    function saveProduct(Request $req)
+    {
+        $product=new Product;
+        $product->name=$req->name;
+        $product->price=$req->price;
+        $product->category=$req->category;
+        $product->description=$req->description;
+        $product->gallery=$req->gallery;
+        $product->save();
+        return redirect()->back();  
+    }
 
 }

@@ -1,6 +1,31 @@
 @extends('master')
 @section("content")
 <div class="container custom-product">
+<style>
+.checkbox{
+  display: none !important;
+}
+.checked-clr{
+  color: magenta;
+}
+.unchecked-clr{
+  color:blue;
+}
+</style>
+<script>
+function myFunction(id){
+  var checkBox = document.getElementById(id);
+  var labelId = id.match(/\d/g).join("");
+  var label = document.getElementById("favoriteStyle"+labelId);
+  if(checkBox.checked == true){
+    label.style.color = "magenta";
+    document.getElementById("cartSubmit"+labelId).click();
+  }else{
+    label.style.color = "blue";
+    document.getElementById("removeCart"+labelId).click();
+  }
+}
+</script>
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
   <!-- Indicators -->
   <ol class="carousel-indicators">
@@ -38,7 +63,18 @@
 <h3>Trending Products</h3>
 <br><br>
 @foreach($products as $item)
-<div class="trending-item"> 
+<div class="trending-item">
+<form action="/add_to_cart" method="POST">
+@csrf
+@if(Session::get('user')['id'] == $item['user_id'])
+<input type="checkbox" class="checkbox" id="favorite{{$item['id']}}" onclick="myFunction(this.id)" name="product_id" checked value="{{$item['id']}}">
+@else
+<input type="checkbox" class="checkbox" id="favorite{{$item['id']}}" onclick="myFunction(this.id)" name="product_id" value="{{$item['id']}}">
+@endif
+<label class="glyphicon glyphicon-heart {{Session::get('user')['id']==$item['user_id']?'checked-clr':'unchecked-clr'}}" for="favorite{{$item['id']}}" id="favoriteStyle{{$item['id']}}" style="margin-right: 10px;cursor: pointer;"></label>
+<input type="submit" id="cartSubmit{{$item['id']}}" class="hidden">
+</form>
+<a href="/removecart/{{$item['cart_id']}}" id="removeCart{{$item['id']}}" class="btn btn-warning hidden"></a>
 <a href="/detail/{{$item['id']}}">
       <img class="trending-image" src="{{$item['gallery']}}" >
       <div class="">
