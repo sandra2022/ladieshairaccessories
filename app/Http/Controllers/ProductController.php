@@ -16,8 +16,12 @@ class ProductController extends Controller
         $userId=Session::get('user')['id'];
         $data=DB::table('products')
         ->select('products.id AS id', 'products.name AS name', 'products.price AS price', 'products.description AS description', 'products.gallery AS gallery', 'cart.id AS cart_id', 'cart.user_id AS user_id')
-        ->leftjoin('cart','cart.product_id','=','products.id')
-        ->orderBy('products.id', 'asc')
+        // ->leftjoin('cart','cart.product_id','=','products.id')
+        ->leftjoin('cart', function ($join) use ($userId){
+            $join->on('products.id', '=', 'cart.product_id')
+                 ->where('cart.user_id', '=', $userId);
+        })
+        ->groupBy('products.id')
         ->get();
         $result = json_decode($data, true);
         return view('product',['products'=>$result]);
