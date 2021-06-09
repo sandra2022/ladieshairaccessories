@@ -6,7 +6,7 @@
   display: none !important;
 }
 .checked-clr{
-  color: magenta;
+  color: red;
 }
 .unchecked-clr{
   color:blue;
@@ -64,6 +64,7 @@ function myFunction(id){
 <br><br>
 @foreach($products as $item)
 <div class="trending-item">
+@if(Session::get('user')['id'] != 0)
 <form action="/add_to_cart" method="POST">
 @csrf
 @if(Session::get('user')['id'] == $item['user_id'])
@@ -75,6 +76,7 @@ function myFunction(id){
 <input type="submit" id="cartSubmit{{$item['id']}}" class="hidden">
 </form>
 <a href="/removecart/{{$item['cart_id']}}" id="removeCart{{$item['id']}}" class="btn btn-warning hidden"></a>
+@endif
 <a href="/detail/{{$item['id']}}">
       <img class="trending-image" src="{{$item['gallery']}}" >
       <div class="">

@@ -32,7 +32,7 @@
 <form action="/orderplace" method="POST">
 @csrf
   <div class="form-group">
-    <textarea name="address" placeholder="enter your address" class="form-control"></textarea>
+    <textarea name="address" placeholder="enter your address" class="form-control" required></textarea>
     <input type="number" name="product_id" class="form-control hidden" value="{{$productId}}">
   </div>
   <div class="form-group">
