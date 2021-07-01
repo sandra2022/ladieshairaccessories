@@ -63,6 +63,7 @@ $total= ProductController::cartItem();
         <li><a href="/aboutus"><b>About Us</b></a> </li>
       </ul>
       <form action="/search" class="navbar-form navbar-left">
+      @if(Session::has('user'))
       @if(Session::get('user')['role']==1)
       <div class="form-group">
           <input type="text" name="query" class="form-control search-box" placeholder="Search" style="max-width: 490px;">
@@ -70,6 +71,12 @@ $total= ProductController::cartItem();
         <button type="submit" class="btn btn-default hidden"><b>Search</b></button>
       @else
         <div class="form-group">
+          <input type="text" name="query" class="form-control search-box" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default"><b>Search</b></button>
+      @endif
+      @else
+      <div class="form-group">
           <input type="text" name="query" class="form-control search-box" placeholder="Search">
         </div>
         <button type="submit" class="btn btn-default"><b>Search</b></button>
